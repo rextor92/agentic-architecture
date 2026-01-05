@@ -107,7 +107,7 @@ When comparing Azure services (e.g., Container Apps vs AKS, Service Bus vs Event
 
 ## Implementation Guidance Expectations
 If asked “how would we implement this”:
-- Prefer Infrastructure as Code and automation (e.g., Bicep/Terraform/GitOps) aligned with repo standards.
+- Prefer Infrastructure as Code and automation (Terraform) aligned with repo standards.
 - Include:
   - component breakdown
   - interfaces (APIs/events)
