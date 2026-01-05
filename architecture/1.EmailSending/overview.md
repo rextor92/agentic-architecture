@@ -4,9 +4,10 @@ Goal
  - Deliver reliable, auditable, and compliant transactional email delivery for users, with strong deliverability, bounce handling, and audit trails.
 
 Assumptions
- - Emails may contain PII/PHI. Treat content as sensitive until confirmed otherwise.
+ - Legal confirmed (2026-01-05) that a Business Associate Agreement (BAA) is required if emails contain PHI. Current scope: transactional emails do NOT contain PHI, so a BAA is not required for initial sends.
+ - Emails may contain PII; treat PII as sensitive and apply payload minimization and redaction in logs.
  - Primary hosting is in Azure; prefer Azure-native services where they match requirements.
- - Expected volume is not yet provided; design for configurable scale (small → large) and provider fallback.
+ - Expected volume: approximately 10,000 emails/day (baseline). Design should allow scaling for bursts above this baseline and support provider fallback.
 
 Recommendation (SendGrid-focused)
  - Use a queued, worker-based send pipeline integrated with Twilio SendGrid for transactional delivery.

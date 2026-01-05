@@ -5,7 +5,7 @@ This document summarizes the EmailSending work so another engineer can continue 
 
 **Current Decision**
 - **Decision:** Use Twilio SendGrid as the primary transactional email provider (see ADR: `architecture/1.EmailSending/adr/0001-choose-sendgrid.md`).
-- **Important constraint:** Do not send PHI until Legal signs a BAA with SendGrid.
+ - **Important constraint & legal status:** Legal confirmed on 2026-01-05 that a Business Associate Agreement (BAA) is required if emails contain PHI. Current scope: transactional emails do NOT contain PHI, so a BAA is not required for initial sends.
 
 **Key Artifacts**
 - **Overview:** `architecture/1.EmailSending/overview.md`
@@ -36,7 +36,10 @@ This document summarizes the EmailSending work so another engineer can continue 
   "sensitive": false
 }
 ```
-- **Notes:** `send_id` is required for idempotency. Set `sensitive=true` only if the payload may contain PHI (do not send until BAA signed).
+ - **Notes:** `send_id` is required for idempotency. Set `sensitive=true` only if the payload may contain PHI. Current scope: `sensitive` should be `false` for initial sends; do not set `sensitive=true` unless Legal confirms BAA or scope changes.
+
+**Expected Volume**
+- Baseline: ~10,000 emails/day (confirmed). Design for bursts above baseline and provider rate limits.
 
 **Operational patterns & requirements**
 - **Idempotency:** Workers must deduplicate on `send_id` to avoid duplicate sends during retries or failover.

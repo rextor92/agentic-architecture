@@ -20,9 +20,10 @@ related-docs:
 We require a reliable, auditable, and secure transactional email service for user-triggered messages (registration confirmations, password resets, receipts, critical alerts). The environment is primarily Azure-hosted and some messages may contain PII/PHI. We must ensure deliverability, bounce handling, and observability while minimizing operational burden.
 
 Constraints and assumptions:
-- Emails may include PII/PHI; sending PHI requires a signed BAA with the provider.  
-- Primary platform is Azure; prefer Azure-friendly integration patterns.  
-- Volume is currently unknown; solution must scale from small to large and support provider failover.  
+ - Emails may include PII; treat PII as sensitive. Transactional emails do NOT contain PHI in the current scope.
+ - Legal confirmed on 2026-01-05 that a Business Associate Agreement (BAA) is required if PHI will be transmitted to a third-party provider; since current scope excludes PHI, a BAA is not required for initial sends.
+ - Primary platform is Azure; prefer Azure-friendly integration patterns.  
+ - Expected volume: approximately 10,000 emails/day (baseline). Design must allow scaling for bursts and provider fallback.  
 
 ## Decision
 We will use Twilio SendGrid as the primary transactional email provider.  
@@ -105,8 +106,8 @@ Impact:
 - Teams: Email Platform, Security/Compliance, DevOps, Support.
 
 ## Security & Compliance Considerations (Healthcare)
-- Data classification: likely PII/PHI for some emails; treat as sensitive until confirmed.  
-- BAA: Required before sending PHI via SendGrid. Obtain legal approval and signed BAA.  
+ - Data classification: PII is in scope; PHI is currently out of scope for transactional emails. Treat all PII as sensitive until specifically approved.
+ - BAA: Legal confirmed (2026-01-05) that a BAA is required for any PHI sent via a third-party provider. Since transactional emails are currently PHI-free, a BAA is not required for initial sends. If PHI scope changes, obtain legal approval and a signed BAA before sending PHI.
 - Encryption: TLS in transit for all API calls and webhooks; storage encryption for audit logs.  
 - Identity & Access: Use Azure Managed Identity for workers and grant least privilege to Key Vault and Service Bus.  
 - Audit/logging: Persist immutable send/audit records in an access-controlled store; redact PII/PHI from central logs.  

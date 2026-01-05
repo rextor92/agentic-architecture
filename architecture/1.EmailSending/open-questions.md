@@ -4,9 +4,9 @@
 **Owners:** Email Platform Team
 
 ## Open Questions
-- Expected daily and peak email volumes (baseline and burst patterns).
-- Will transactional emails ever contain PHI in body or attachments, or only references/links to protected data?
-- Does Legal/Compliance require us to exclude PHI until a signed BAA is in place with SendGrid/Twilio?
+- Expected daily and peak email volumes (baseline and burst patterns): **~10,000 emails/day** (confirmed).
+- Will transactional emails ever contain PHI in body or attachments, or only references/links to protected data? **Current scope: no PHI in emails.**
+- Does Legal/Compliance require us to exclude PHI until a signed BAA is in place with SendGrid/Twilio? **Legal confirmed (2026-01-05) that a BAA is required for PHI; current sends contain no PHI so a BAA is not required at this time.**
 - Which Azure worker platform is preferred for the first implementation (Azure Functions, App Service/WebJobs, Container Apps, AKS)?
 - Do we require dedicated sending IP(s) at launch, or can we start on shared IPs and request dedicated IPs later?
 - Who will own the sending domain/subdomain DNS changes and DKIM/SPF/DMARC setup (DevOps/Platform/Security)?
@@ -18,7 +18,7 @@
 
 ## Next Steps (Concrete)
 1. Confirm volume estimates and PHI scope with Product/Analytics and Compliance (owner: Product, due: 2026-01-12).
-2. Ask Legal to confirm BAA requirements and start BAA negotiation with Twilio/SendGrid if PHI is in scope (owner: Legal/Compliance, due: 2026-01-19).
+2. Only start BAA negotiation if PHI scope changes. Legal has confirmed BAAs are required for PHI (2026-01-05); trigger: PHI scope change (owner: Legal/Compliance).
 3. Choose initial worker platform and create a small spike/prototype (owner: Email Platform Team, due: 2026-01-15):
    - Minimal prototype: Service Bus trigger -> template render -> SendGrid send -> persist message id.
    - Include local tests and a README.
