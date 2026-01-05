@@ -1,0 +1,2 @@
+As a software architect, I want to develop a solution
+to send transactional emails in my system. Those are not marketing emails, but they need to follow my brand identity. They need to be received as a response to a user action (e.g., registration, request for info, etc).
